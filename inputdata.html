@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>INPUT DATA KIB B (PERALATAN DAN MESIN)</title>
+<meta name="description" content="Daftar tautan Google Spreadsheet per kecamatan" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans'; }
+</style>
+</head>
+<body class="bg-gray-50 min-h-screen flex">
+
+<!-- Sidebar -->
+<nav class="w-64 bg-white shadow-md border-r border-gray-200 flex flex-col">
+  <div class="px-6 py-4 border-b border-gray-200 flex items-center gap-3">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/3/34/Lambang_Kabupaten_Donggala.png" alt="Lambang Kabupaten Donggala" class="h-8 w-auto object-contain" loading="lazy" />
+    <span class="text-lg font-semibold text-blue-700">ASET DIKBUD</span>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo-Tut-Wuri-Handayani-PNG-Warna.png" alt="Logo Tut Wuri Handayani" class="h-8 w-auto object-contain ml-auto" loading="lazy" />
+  </div>
+
+  <div class="group border-b border-gray-200">
+    <a href="index.html" class="px-6 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 block">Master Data</a>
+  </div>
+
+  <!-- KIB Dropdown -->
+  <div class="group border-b border-gray-200">
+    <button id="kibBtn" class="w-full flex justify-between items-center px-6 py-3 hover:bg-blue-100 focus:outline-none">
+      <span class="font-medium text-gray-700">KIB</span>
+      <svg id="kibArrow" class="w-4 h-4 text-gray-500 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+    <div id="kibDropdown" class="hidden flex flex-col bg-gray-50 border-t border-gray-200">
+      <a href="inputdata.html" class="px-10 py-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50">Input KIB B</a>
+      <a href="#" class="px-10 py-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50">Input KIB C</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Konten utama -->
+<div class="flex-1 ml-64">
+  <header class="sticky top-0 z-30 backdrop-blur supports-[backdrop-filter]:bg-white/60 bg-white/80 border-b">
+    <div class="mx-auto max-w-6xl px-4 py-4 flex items-center gap-3">
+      <div class="flex items-center gap-2 mr-2">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/34/Lambang_Kabupaten_Donggala.png" alt="Lambang Kabupaten Donggala" class="h-10 w-auto object-contain" loading="lazy" />
+        <img src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo-Tut-Wuri-Handayani-PNG-Warna.png" alt="Logo Tut Wuri Handayani" class="h-10 w-auto object-contain" loading="lazy" />
+      </div>
+      <i class="bi bi-link-45deg text-2xl"></i>
+      <h1 class="text-xl md:text-2xl font-extrabold tracking-tight">INPUT DATA ASET SEKOLAH – KIB B</h1>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-6xl px-4 py-6">
+    <div class="flex flex-col md:flex-row md:items-center gap-3 md:gap-4 mb-6">
+      <div class="relative flex-1">
+        <input id="search" type="text" placeholder="Cari kecamatan…" class="w-full rounded-2xl border border-gray-300 bg-white px-4 py-3 pr-10 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+        <i class="bi bi-search absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="btnShowAll" class="rounded-2xl border px-4 py-2.5 shadow-sm hover:shadow transition duration-150">Semua</button>
+        <button id="btnShowAvailable" class="rounded-2xl border px-4 py-2.5 shadow-sm hover:shadow transition duration-150">Tersedia</button>
+        <button id="btnShowMissing" class="rounded-2xl border px-4 py-2.5 shadow-sm hover:shadow transition duration-150">Belum Ada</button>
+      </div>
+    </div>
+
+    <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5"></div>
+
+    <footer class="mt-10 text-center text-xs text-gray-500">
+      <p>Terakhir diperbarui: <span id="now"></span></p>
+    </footer>
+  </main>
+</div>
+
+<script>
+  // Dropdown toggle
+  const toggleDropdown = (btnId, dropdownId, arrowId) => {
+    const btn = document.getElementById(btnId);
+    const dropdown = document.getElementById(dropdownId);
+    const arrow = document.getElementById(arrowId);
+    btn.addEventListener('click', () => {
+      dropdown.classList.toggle('hidden');
+      arrow.classList.toggle('rotate-90');
+    });
+  };
+  toggleDropdown('kibBtn', 'kibDropdown', 'kibArrow');
+
+  // Data kecamatan
+  const data = [
+    { name: 'Banawa', url: 'https://docs.google.com/spreadsheets/d/1Ql_xKix5CFAedhZRTu_kw_7gnKKZYevY/edit?gid=1917777904' },
+    { name: 'Banawa Tengah', url: 'https://docs.google.com/spreadsheets/d/1cvgNSBgTX4pcCXEXWMsupF0NmMLxhERJ/edit?gid=1454720232' },
+    { name: 'Banawa Selatan', url: 'https://docs.google.com/spreadsheets/d/1JGop98g-bmxX8xq9SpVedCHJ7z8p8aTV/edit?gid=708970016' },
+    { name: 'Rio Pakava', url: '' },
+    { name: 'Pinembani', url: 'https://docs.google.com/spreadsheets/d/1POiI7Ii8JyeNF-jNNxCpsjTnbtO73qWm/edit?gid=1860451546' },
+    { name: 'Tanantovea', url: 'https://docs.google.com/spreadsheets/d/1o_tb8Tfzk5Cojq5wGvEs7AYCgSj06kLaI5H4K9O4-AY/edit?gid=1200528899' },
+    { name: 'Labuan', url: 'https://docs.google.com/spreadsheets/d/1sKA5fl_gufKaFxTbhOGkgJmL0gsAKdH_/edit?gid=1615242439' },
+    { name: 'Sindue', url: 'https://docs.google.com/spreadsheets/d/1kEhC50rEd85N4trFlcsyfsse1EEKfEH9/edit?gid=1920885371' },
+    { name: 'Sindue Tombusabora', url: 'https://docs.google.com/spreadsheets/d/1AKZNR_vle4v_G_OHi-aItgIGO6YARDNN/edit?gid=1974330298' },
+    { name: 'Sindue Tobata', url: 'https://docs.google.com/spreadsheets/d/1643If_Xhb2mufR_0NBrSA_4U_n6Fx3Gi/edit?gid=801352666' },
+    { name: 'Sirenja', url: 'https://docs.google.com/spreadsheets/d/1jABt9pgTKlI7v4mF_ik7wsGuTqd6s_o0/edit?gid=1937115064' },
+    { name: 'Balaesang', url: 'https://docs.google.com/spreadsheets/d/1vNnfLPLBv4AgxHJzNumDeSunKmTkFnsK/edit?gid=1401841928' },
+    { name: 'Balaesang Tanjung', url: 'https://docs.google.com/spreadsheets/d/15yJeSYt7gZ1FPlT8uSbYoARNiVMoWFWh/edit?gid=820099832' },
+    { name: 'Dampelas', url: 'https://docs.google.com/spreadsheets/d/1AXi8fGpuQoiaqF3cc37HWcg2ykGbS4Rc/edit?gid=1489077321' },
+    { name: 'Sojol', url: 'https://docs.google.com/spreadsheets/d/1PeilaS7lZV8pqOgowMx0YvJPTbRRStYJ/edit?gid=1781390946' },
+    { name: 'Sojol Utara', url: 'https://docs.google.com/spreadsheets/d/1LEeF0XiUncQPVNSCV0-kVl6B45sPryhC/edit?gid=502544387' },
+  ];
+
+  const grid = document.getElementById('grid');
+  const search = document.getElementById('search');
+  let currentMode = 'all';
+
+  function badge(available) {
+    return `<span class="ml-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] transition-colors ${available ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-600'}">
+      <i class="bi ${available ? 'bi-check-circle' : 'bi-dash-circle'}"></i>${available ? 'Tersedia' : 'Belum ada'}</span>`;
+  }
+
+  function card(item) {
+    const available = Boolean(item.url);
+    return `
+      <div class="group rounded-2xl border bg-white shadow-sm hover:shadow-md transition overflow-hidden">
+        <div class="p-4">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <h3 class="text-lg font-semibold">${item.name} ${badge(available)}</h3>
+              <p class="mt-1 text-sm text-gray-500">Master Data kecamatan</p>
+            </div>
+            <i class="bi bi-folder2-open text-xl text-indigo-600 opacity-80 group-hover:opacity-100"></i>
+          </div>
+          <div class="mt-4 flex items-center gap-2">
+            ${available
+              ? `<a href="${item.url}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-xl border border-indigo-200 bg-indigo-50 px-3 py-2 text-sm font-medium text-indigo-700 hover:bg-indigo-100"><i class='bi bi-box-arrow-up-right'></i>Input Data</a>`
+              : `<button disabled aria-disabled="true" class="inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-sm text-gray-400 bg-gray-100 cursor-not-allowed"><i class='bi bi-slash-circle'></i>Tidak tersedia</button>`}
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function render(list) {
+    grid.innerHTML = list.map(card).join('');
+  }
+
+  function filter(query = '', mode = 'all') {
+    const q = query.trim().toLowerCase();
+    return data.filter(item => {
+      let matches = item.name.toLowerCase().includes(q);
+      const available = Boolean(item.url);
+      if (mode === 'available') return matches && available;
+      if (mode === 'missing') return matches && !available;
+      return matches;
+    });
+  }
+
+  // Initial render
+  render(data);
+
+  // Search
+  let timeout;
+  search.addEventListener('input', e => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => render(filter(e.target.value, currentMode)), 200);
+  });
+
+  // Mode buttons
+  const btnShowAll = document.getElementById('btnShowAll');
+  const btnShowAvailable = document.getElementById('btnShowAvailable');
+  const btnShowMissing = document.getElementById('btnShowMissing');
+
+  function updateButtons(active) {
+    [btnShowAll, btnShowAvailable, btnShowMissing].forEach(b => b.classList.remove('ring-2','ring-indigo-500','bg-indigo-50'));
+    const map = { all: btnShowAll, available: btnShowAvailable, missing: btnShowMissing };
+    map[active].classList.add('ring-2','ring-indigo-500','bg-indigo-50');
+  }
+
+  btnShowAll.addEventListener('click', () => { currentMode='all'; updateButtons('all'); render(filter(search.value,currentMode)); });
+  btnShowAvailable.addEventListener('click', () => { currentMode='available'; updateButtons('available'); render(filter(search.value,currentMode)); });
+  btnShowMissing.addEventListener('click', () => { currentMode='missing'; updateButtons('missing'); render(filter(search.value,currentMode)); });
+
+  updateButtons('all');
+
+  // Footer date
+  document.getElementById('now').textContent = new Date().toLocaleString('id-ID', { dateStyle: 'long', timeStyle: 'short' });
+</script>
+</body>
+</html>
