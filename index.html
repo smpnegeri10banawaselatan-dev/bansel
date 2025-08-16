@@ -6,7 +6,7 @@
   <title>Data KIB Aset Dinas Pendidikan dan Kebudayaan</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .eye-icon {
+    .eye-icon, .book-icon {
       cursor: pointer;
       display: inline-flex;
       justify-content: center;
@@ -14,59 +14,58 @@
       width: 1.5rem;
       height: 1.5rem;
       font-size: 1.25rem;
-      color: #2563eb;
     }
+    .eye-icon { color: #2563eb; }
+    .book-icon { color: #16a34a; }
     .rotate-90 { transform: rotate(90deg); }
   </style>
 </head>
 <body class="bg-gray-50 font-sans flex min-h-screen">
 
-<!-- Sidebar -->
-<nav id="sidebar" class="w-64 bg-white shadow-md border-r border-gray-200 flex flex-col fixed md:static inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-200 z-50">
-  <div class="px-6 py-4 border-b border-gray-200 flex items-center gap-3">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/3/34/Lambang_Kabupaten_Donggala.png" alt="Lambang Kabupaten Donggala" class="h-8 w-auto object-contain" />
-    <span class="text-lg font-semibold text-blue-700">ASET DIKBUD</span>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo-Tut-Wuri-Handayani-PNG-Warna.png" alt="Logo Tut Wuri Handayani" class="h-8 w-auto object-contain ml-auto" />
-  </div>
+  <!-- Sidebar -->
+  <nav id="sidebar" class="hidden md:flex w-64 bg-white shadow-md border-r border-gray-200 flex-shrink-0 flex-col z-50">
+    <div class="px-6 py-4 border-b border-gray-200 flex items-center gap-3">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/3/34/Lambang_Kabupaten_Donggala.png" alt="Lambang Kabupaten Donggala" class="h-8 w-auto object-contain" loading="lazy" />
+      <span class="text-lg font-semibold text-blue-700">ASET DIKBUD</span>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo-Tut-Wuri-Handayani-PNG-Warna.png" alt="Logo Tut Wuri Handayani" class="h-8 w-auto object-contain ml-auto" loading="lazy" />
+    </div>
 
-  <div class="group border-b border-gray-200">
-    <a href="#" data-sheet="Master Data" class="px-6 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 block">Master Data</a>
-  </div>
+    <!-- Menu Master Data -->
+    <div class="group border-b border-gray-200">
+      <a href="#" data-sheet="Master Data" class="px-6 py-3 text-gray-700 hover:text-blue-600 hover:bg-blue-50 block">Master Data</a>
+    </div>
 
-  <div class="group border-b border-gray-200">
-    <button id="kibBtn" class="w-full flex justify-between items-center px-6 py-3 hover:bg-blue-100 focus:outline-none">
-      <span class="font-medium text-gray-700">KIB</span>
-      <svg id="kibArrow" class="w-4 h-4 text-gray-500 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-      </svg>
+    <!-- Menu KIB Dropdown -->
+    <div class="group border-b border-gray-200">
+      <button id="kibBtn" class="w-full flex justify-between items-center px-6 py-3 hover:bg-blue-100 focus:outline-none">
+        <span class="font-medium text-gray-700">KIB</span>
+        <svg id="kibArrow" class="w-4 h-4 text-gray-500 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+      <div id="kibDropdown" class="hidden flex flex-col bg-gray-50 border-t border-gray-200">
+        <a href="inputdata.html" class="px-10 py-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 kib-link">Input KIB B</a>
+        <a href="#" class="px-10 py-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 kib-link">Input KIB C</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Konten utama -->
+  <main class="flex-1 p-6 overflow-auto max-w-full">
+
+    <!-- Tombol Toggle Sidebar (Mobile) -->
+    <button id="mobileMenuBtn" class="md:hidden mb-4 px-4 py-2 bg-blue-600 text-white rounded focus:outline-none">
+      ☰ Menu
     </button>
-    <div id="kibDropdown" class="hidden flex flex-col bg-gray-50 border-t border-gray-200">
-      <a href="inputdata.html" class="px-10 py-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 kib-link">Input KIB B</a>
-      <a href="#" class="px-10 py-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 kib-link">Input KIB C</a>
-    </div>
-  </div>
-</nav>
 
-<div class="flex-1 flex flex-col md:ml-64">
-  <!-- Header Mobile -->
-  <header class="bg-white shadow-md p-3 flex items-center md:hidden">
-    <button id="menuBtn" class="p-2 text-gray-600 focus:outline-none">☰</button>
-    <h1 class="ml-3 font-semibold text-gray-700">ASET DIKBUD</h1>
-  </header>
+    <h2 class="text-2xl font-semibold mb-6 text-center text-gray-800">Data Satuan Pendidikan Jenjang SD-SMP Negeri dan Swasta</h2>
 
-  <main class="p-4 overflow-auto">
-    <h2 class="text-xl md:text-2xl font-semibold mb-4 text-center text-gray-800">
-      Data Satuan Pendidikan Jenjang SD-SMP Negeri dan Swasta
-    </h2>
-
-    <!-- Search -->
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
-      <input id="searchInput" type="text" placeholder="Cari data sekolah..." class="w-full md:flex-grow px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm" />
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6 max-w-5xl mx-auto">
+      <input id="searchInput" type="text" placeholder="Cari data sekolah..." class="flex-grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
     </div>
 
-    <!-- Tabel -->
-    <div class="overflow-x-auto max-w-full shadow rounded-lg bg-white">
-      <table id="dataTable" class="min-w-full table-auto border-collapse border border-gray-300 text-xs md:text-sm">
+    <div class="overflow-x-auto max-w-7xl mx-auto shadow rounded-lg bg-white">
+      <table id="dataTable" class="min-w-full table-auto border-collapse border border-gray-300">
         <thead class="bg-blue-600 text-white">
           <tr id="tableHeader" class="text-center"></tr>
         </thead>
@@ -74,151 +73,146 @@
       </table>
     </div>
 
-    <nav aria-label="Pagination" class="mt-4 flex justify-center">
+    <nav aria-label="Pagination" class="mt-6 flex justify-center">
       <ul id="pagination" class="inline-flex space-x-1"></ul>
     </nav>
   </main>
-</div>
 
-<script>
-  // Sidebar toggle
-  const menuBtn = document.getElementById("menuBtn");
-  const sidebar = document.getElementById("sidebar");
-  if (menuBtn) {
-    menuBtn.addEventListener("click", () => {
-      sidebar.classList.toggle("-translate-x-full");
-    });
-  }
-
-  function toggleDropdown(btnId, dropdownId, arrowId) {
-    const btn = document.getElementById(btnId);
-    const dropdown = document.getElementById(dropdownId);
-    const arrow = document.getElementById(arrowId);
-    btn.addEventListener('click', () => {
-      dropdown.classList.toggle('hidden');
-      arrow.classList.toggle('rotate-90');
-    });
-  }
-  toggleDropdown('kibBtn', 'kibDropdown', 'kibArrow');
-
-  const SPREADSHEET_ID = '152oNQyrJEeg-xW3okB2LKbGIUapxDakDMCbDjqpDl3U';
-  const SHEET_NAME = 'Master Data';
-  const rowsPerPage = 20;
-  let allData = [], filteredData = [], columns = [], colMap = {};
-
-  async function loadSheet(sheetName = SHEET_NAME) {
-    const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
-    try {
-      const res = await fetch(url);
-      const text = await res.text();
-      const jsonStr = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
-      const data = JSON.parse(jsonStr);
-
-      const wantedCols = ["Nama Sekolah", "Jenjang", "Status", "Kecamatan", "KIB Peralatan dan Mesin", "Dokumen Barcode"];
-      columns = data.table.cols.map(c => c.label);
-      colMap = {};
-      wantedCols.forEach(col => {
-        colMap[col] = columns.findIndex(c => c && c.toLowerCase().includes(col.toLowerCase()));
-      });
-
-      const rows = data.table.rows;
-      allData = rows.map(r => {
-        return wantedCols.map(col => {
-          const idx = colMap[col];
-          return idx >= 0 && r.c[idx] ? r.c[idx].v : "";
-        });
-      });
-
-      filteredData = [...allData];
-      renderTableHeader(wantedCols);
-      renderTablePage(1);
-    } catch (e) { console.error(e); }
-  }
-
-  function renderTableHeader(cols) {
-    const headerRow = document.getElementById('tableHeader');
-    headerRow.innerHTML = '';
-    cols.forEach(col => {
-      const th = document.createElement('th');
-      th.textContent = col;
-      th.className = 'px-2 md:px-4 py-2 border border-blue-700 font-semibold text-xs md:text-sm';
-      headerRow.appendChild(th);
-    });
-  }
-
-  function renderTablePage(page) {
-    const tbody = document.getElementById('tableBody');
-    tbody.innerHTML = '';
-    const start = (page - 1) * rowsPerPage, end = start + rowsPerPage;
-    filteredData.slice(start, end).forEach(row => {
-      const tr = document.createElement('tr');
-      tr.className = 'hover:bg-gray-100 transition';
-      row.forEach((cell, idx) => {
-        const td = document.createElement('td');
-        td.className = 'px-2 md:px-4 py-1 md:py-2 border border-gray-300 align-middle whitespace-nowrap text-left';
-        const colName = Object.keys(colMap)[idx];
-        if ((colName === "KIB Peralatan dan Mesin" || colName === "Dokumen Barcode") && isValidUrl(cell)) {
-          td.classList.add('text-center');
-          td.innerHTML = `<a href="${cell}" target="_blank" rel="noopener noreferrer" class="eye-icon" title="Lihat Dokumen">&#128065;</a>`;
-        } else {
-          td.textContent = cell;
-        }
-        tr.appendChild(td);
-      });
-      tbody.appendChild(tr);
-    });
-    renderPagination(page);
-  }
-
-  function renderPagination(currentPage) {
-    const totalPages = Math.ceil(filteredData.length / rowsPerPage);
-    const pagination = document.getElementById('pagination');
-    pagination.innerHTML = '';
-
-    function createPageItem(page, label = null, disabled = false, active = false) {
-      const li = document.createElement('li');
-      const btn = document.createElement('button');
-      btn.textContent = label || page;
-      btn.disabled = disabled;
-      btn.className = `px-2 md:px-3 py-1 rounded text-xs md:text-sm ${active ? 'bg-blue-600 text-white' : 'bg-white text-blue-600 hover:bg-blue-100'} disabled:opacity-50`;
+  <script>
+    // Toggle KIB dropdown
+    function toggleDropdown(btnId, dropdownId, arrowId) {
+      const btn = document.getElementById(btnId);
+      const dropdown = document.getElementById(dropdownId);
+      const arrow = document.getElementById(arrowId);
       btn.addEventListener('click', () => {
-        if (!disabled) renderTablePage(page);
+        dropdown.classList.toggle('hidden');
+        arrow.classList.toggle('rotate-90');
       });
-      li.appendChild(btn);
-      return li;
     }
+    toggleDropdown('kibBtn', 'kibDropdown', 'kibArrow');
 
-    pagination.appendChild(createPageItem(currentPage - 1, '« Prev', currentPage === 1));
-    for (let i = 1; i <= totalPages; i++) {
-      pagination.appendChild(createPageItem(i, null, false, i === currentPage));
-    }
-    pagination.appendChild(createPageItem(currentPage + 1, 'Next »', currentPage === totalPages));
-  }
-
-  function isValidUrl(str) {
-    try {
-      new URL(str);
-      return true;
-    } catch {
-      return false;
-    }
-  }
-
-  // Search
-  document.getElementById('searchInput').addEventListener('input', () => {
-    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-    filteredData = allData.filter(row => searchTerm === '' || row.some(cell => String(cell).toLowerCase().includes(searchTerm)));
-    renderTablePage(1);
-  });
-
-  document.querySelectorAll('[data-sheet]').forEach(link => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      loadSheet(link.getAttribute('data-sheet'));
+    // Toggle sidebar on mobile
+    document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('hidden');
     });
-  });
 
-  loadSheet();
-</script>
+    const SPREADSHEET_ID = '152oNQyrJEeg-xW3okB2LKbGIUapxDakDMCbDjqpDl3U';
+    const SHEET_NAME = 'Master Data';
+    const rowsPerPage = 50;
+    let allData = [], filteredData = [], kibColIndex = -1, dokBarcodeColIndex = -1;
+
+    async function loadSheet(sheetName = SHEET_NAME) {
+      const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
+      try {
+        const res = await fetch(url);
+        const text = await res.text();
+        const jsonStr = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
+        const data = JSON.parse(jsonStr);
+        const cols = data.table.cols.map(c => c.label);
+        kibColIndex = cols.findIndex(c => c && c.toLowerCase().includes('kib peralatan dan mesin'));
+        dokBarcodeColIndex = cols.findIndex(c => c && c.toLowerCase().includes('dokumen barcode'));
+        const rows = data.table.rows;
+        allData = rows.map(r => r.c.map(cell => (cell ? cell.v : '')));
+        filteredData = [...allData];
+        renderTableHeader(cols);
+        renderTablePage(1);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function renderTableHeader(cols) {
+      const headerRow = document.getElementById('tableHeader');
+      headerRow.innerHTML = '';
+      cols.forEach(col => {
+        const th = document.createElement('th');
+        th.textContent = col;
+        th.className = 'px-4 py-3 border border-blue-700 font-semibold text-sm';
+        headerRow.appendChild(th);
+      });
+    }
+
+    function renderTablePage(page) {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
+      const start = (page - 1) * rowsPerPage, end = start + rowsPerPage;
+      filteredData.slice(start, end).forEach(row => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-gray-100 transition';
+        row.forEach((cell, idx) => {
+          const td = document.createElement('td');
+          td.className = 'px-4 py-2 border border-gray-300 align-middle';
+          if (idx === kibColIndex && isValidUrl(cell)) {
+            td.classList.add('text-center');
+            const link = document.createElement('a');
+            link.href = cell;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.title = 'Lihat detail KIB Peralatan dan Mesin';
+            link.innerHTML = '&#128065;';
+            link.classList.add('eye-icon');
+            td.appendChild(link);
+          } else if (idx === dokBarcodeColIndex && isValidUrl(cell)) {
+            td.classList.add('text-center');
+            const link = document.createElement('a');
+            link.href = cell;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.title = 'Lihat Dokumen Barcode';
+            link.innerHTML = '&#128214;';
+            link.classList.add('book-icon');
+            td.appendChild(link);
+          } else {
+            td.textContent = cell;
+            td.classList.add('text-left');
+          }
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+      renderPagination(page);
+    }
+
+    function renderPagination(currentPage) {
+      const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+      const pagination = document.getElementById('pagination');
+      pagination.innerHTML = '';
+      function createPageItem(page, label = null, disabled = false, active = false) {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.textContent = label || page;
+        btn.disabled = disabled;
+        btn.className = `px-3 py-1 rounded ${active ? 'bg-blue-600 text-white' : 'bg-white text-blue-600 hover:bg-blue-100'} disabled:opacity-50 disabled:cursor-not-allowed transition`;
+        btn.addEventListener('click', () => { if (!disabled) renderTablePage(page); });
+        li.appendChild(btn);
+        return li;
+      }
+      pagination.appendChild(createPageItem(currentPage - 1, '« Prev', currentPage === 1));
+      for (let i = 1; i <= totalPages; i++) {
+        pagination.appendChild(createPageItem(i, null, false, i === currentPage));
+      }
+      pagination.appendChild(createPageItem(currentPage + 1, 'Next »', currentPage === totalPages));
+    }
+
+    function isValidUrl(str) {
+      try { new URL(str); return true; } catch { return false; }
+    }
+
+    document.getElementById('searchInput').addEventListener('input', () => {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      filteredData = allData.filter(row => searchTerm === '' || row.some(cell => String(cell).toLowerCase().includes(searchTerm)));
+      renderTablePage(1);
+    });
+
+    document.querySelectorAll('[data-sheet]').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        loadSheet(link.getAttribute('data-sheet'));
+      });
+    });
+
+    loadSheet();
+  </script>
 </body>
 </html>
