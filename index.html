@@ -153,17 +153,10 @@
             link.innerHTML = '&#128065;';
             link.classList.add('eye-icon');
             td.appendChild(link);
-          } else if (idx === dokBarcodeColIndex && isValidUrl(cell)) {
-            td.classList.add('text-center');
-            const link = document.createElement('a');
-            link.href = cell;
-            link.target = '_blank';
-            link.rel = 'noopener noreferrer';
-            link.title = 'Lihat Dokumen Barcode';
-            link.innerHTML = '&#128214;';
-            link.classList.add('book-icon');
-            td.appendChild(link);
-          } else {
+          }else if(colName==="Dokumen Barcode" && isValidUrl(cell)){
+  td.classList.add('text-center');
+  td.innerHTML=`<a href="${cell}" target="_blank" rel="noopener noreferrer" class="eye-icon" title="Lihat Dokumen">&#128065;</a>`;
+} else {
             td.textContent = cell;
             td.classList.add('text-left');
           }
